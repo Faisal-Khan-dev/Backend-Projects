@@ -13,7 +13,7 @@ const Dashboard = () => {
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem("token");
-      const url = "http://localhost:5000/api/getNotes";
+      const url = "http://localhost:5001/api/getNotes";
 
       const response = await axios.get(url, {
         headers: {
@@ -49,7 +49,7 @@ const Dashboard = () => {
     try {
 
       const token = localStorage.getItem("token");
-      const url = "http://localhost:5000/api/saveDraft";
+      const url = "http://localhost:5001/api/saveDraft";
 
       const response = await axios.post(
         url,
@@ -72,7 +72,7 @@ const Dashboard = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const url = "http://localhost:5000/api/addNote";
+      const url = "http://localhost:5001/api/addNote";
 
       const response = await axios.post(
         url,
@@ -111,7 +111,7 @@ const Dashboard = () => {
   const delNotes = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const url = `http://localhost:5000/api/${id}`;
+      const url = `http://localhost:5001/api/${id}`;
 
       const response = await axios.delete(url, {
         headers: { Authorization: `Bearer ${token}` },
@@ -139,7 +139,7 @@ const Dashboard = () => {
   const updateNote = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const url = `http://localhost:5000/api/updateNote/${id}`;
+      const url = `http://localhost:5001/api/updateNote/${id}`;
       const response = await axios.put(
         url,
         { note: editNote },
