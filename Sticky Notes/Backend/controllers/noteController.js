@@ -172,4 +172,46 @@ export const draftNoteController = async (req, res) => {
                     })
                 }
             
-            }
+}
+            
+export const updateProfile = async (req, res) => {
+    try {
+        const { id, role } = req.body;
+
+        if (!id || !role) {
+            return res.status(400).json({ message: "id and role are required" });
+        }
+
+        let Model = role === "admin" ? Company : User;
+
+        // Build update data dynamically
+        let updatedData = {};
+
+        // text fields
+        if (req.body.name) updatedData.name = req.body.name;
+        if (req.body.email) updatedData.email = req.body.email;
+        if (req.body.gender) updatedData.gender = req.body.gender;
+        if (req.body.age) updatedData.age = req.body.age;
+
+        // If profile image is uploaded
+        if (req.file) {
+            const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+            updatedData.profileImage = cloudinaryResult.secure_url;
+        }
+
+        const updatedProfile = await Model.findByIdAndUpdate(id, updatedData, {
+            new: true,
+        });
+
+        if (!updatedProfile) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "Profile updated successfully",
+            data: updatedProfile,
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
