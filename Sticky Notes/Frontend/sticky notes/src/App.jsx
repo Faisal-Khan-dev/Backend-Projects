@@ -6,6 +6,9 @@ import Login from "./pages/Auth/login";
 import AuthRoutes from "./pages/Routes/AuthRoutes";
 import PrivateRoutes from "./pages/Routes/PrivateRoutes";
 import { Routes, Route } from "react-router-dom";
+import Profile from "./pages/Profile";
+import Notes from "./pages/Notes";
+import Layout from "./pages/Layout";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -18,7 +21,11 @@ function App() {
           <Route path="/signup" exact element={<Signup />} />
         </Route>
         <Route element={<PrivateRoutes />}>
-          <Route path="/dashboard" exact element={<Dashboard />} />
+          <Route element={<Layout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/notes" element={<Notes />} />
+          </Route>
         </Route>
       </Routes>
     </>
