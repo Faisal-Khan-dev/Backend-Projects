@@ -16,7 +16,7 @@ const Layout = () => {
         setSidebarOpen={setSidebarOpen}
       />
 
-      <div className="flex-1 lg:ml-80">
+      <div className="flex-1 lg:ml-80 ">
         <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className="p-5 ">
           <Outlet />
