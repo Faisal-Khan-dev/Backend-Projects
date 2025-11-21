@@ -1,4 +1,7 @@
 import NoteModel from "../models/noteSchema.js";
+import UserModel from "../models/schema.js";
+import { generateToken } from "../middle_ware/auth.js";
+import {uploadToCloudinary} from "../config/cloudinary.js"
 
 export const addNoteController = async (req, res) => {
     try {
@@ -14,7 +17,7 @@ export const addNoteController = async (req, res) => {
             });
         }
 
-        const userId = req.user._id;
+        const userId = req.user.id;
         console.log("userId", userId);
 
         const delDraft = await NoteModel.deleteOne({ userId, isDraft: true });
@@ -61,7 +64,7 @@ export const delNoteController = async (req, res) => {
 export const getAllNotesController = async (req, res) => {
     try {
 
-        const userId = req.user._id
+        const userId = req.user.id
         console.log("userId", userId);
 
         const notes = await NoteModel.find({ userId, isDraft: false })
@@ -93,7 +96,7 @@ export const updateNoteController = async (req, res) => {
         console.log("noteId", noteId);
         
         const { note } = req.body;
-        const userId = req.user._id
+        const userId = req.user.id
         
         if (!note) {
             return res.json({
@@ -127,9 +130,7 @@ export const updateNoteController = async (req, res) => {
             message: error.message || "something went wrong",
             status: false
         })
-
     };
-
 }
 
 export const draftNoteController = async (req, res) => {
@@ -138,7 +139,7 @@ export const draftNoteController = async (req, res) => {
                     const { note } = req.body
                     console.log("note", note);
             
-                    const userId = req.user._id;
+                    const userId = req.user.id;
                     console.log("userId", userId);
             
                     if (!note || !note.trim()) {
@@ -171,35 +172,34 @@ export const draftNoteController = async (req, res) => {
                         status: false
                     })
                 }
-            
 }
             
 export const updateProfile = async (req, res) => {
     try {
-        const { id, role } = req.body;
+        const id = req.user.id;
+        console.log("id", id);
+        
+        console.log("req.user:", req.user);
 
-        if (!id || !role) {
-            return res.status(400).json({ message: "id and role are required" });
+        
+        if (!id ) {
+            return res.status(400).json({ message: "id is required" });
         }
 
-        let Model = role === "admin" ? Company : User;
-
-        // Build update data dynamically
+      
         let updatedData = {};
 
-        // text fields
         if (req.body.name) updatedData.name = req.body.name;
         if (req.body.email) updatedData.email = req.body.email;
         if (req.body.gender) updatedData.gender = req.body.gender;
         if (req.body.age) updatedData.age = req.body.age;
 
-        // If profile image is uploaded
         if (req.file) {
             const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
             updatedData.profileImage = cloudinaryResult.secure_url;
         }
 
-        const updatedProfile = await Model.findByIdAndUpdate(id, updatedData, {
+        const updatedProfile = await UserModel.findByIdAndUpdate(id, updatedData, {
             new: true,
         });
 
@@ -207,11 +207,16 @@ export const updateProfile = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        const newToken = generateToken(updatedProfile);
+
         res.status(200).json({
             message: "Profile updated successfully",
             data: updatedProfile,
+            token: newToken,
         });
     } catch (err) {
-        res.status(500).json({ message: "Server error", error: err.message });
+        console.log("error", err.message);
+        
+        res.status(500).json({ error: err.message, message: "Server error", });
     }
 };

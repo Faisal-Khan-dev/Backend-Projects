@@ -81,7 +81,7 @@ const Login = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-indigo-700 transition-all duration-200 active:scale-95"
+            className="w-full cursor-pointer bg-gradient-to-br from-indigo-500 to-purple-600 text-white  py-3 rounded-lg font-semibold text-lg  active:scale-95"
           >
             Login
           </button>
@@ -91,7 +91,7 @@ const Login = () => {
           Don’t have an account?{" "}
           <button
             onClick={() => navigate("/signup")}
-            className="text-indigo-600 font-medium hover:underline"
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent cursor-pointer font-medium hover:!underline"
           >
             Sign Up
           </button>

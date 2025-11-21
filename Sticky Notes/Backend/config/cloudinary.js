@@ -1,5 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { Readable } from 'stream';
+import dotenv from "dotenv";
+dotenv.config();
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -20,4 +22,4 @@ const uploadToCloudinary = (buffer) => {
     });
 };
 
-export default { cloudinary, uploadToCloudinary };
+export { cloudinary, uploadToCloudinary };

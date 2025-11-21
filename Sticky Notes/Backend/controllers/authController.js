@@ -153,10 +153,16 @@ export const loginController = async (req, res) => {
             })
         }
 
-        const _id = user._id
-        console.log("id",_id);
+       
 
-        const token = jwt.sign({_id}, "Batch-14" , {expiresIn: "24h"})
+      const token = jwt.sign({
+        "id": user._id,
+        "name": user.name,
+        "email": user.email,
+        "age": user.age,
+        "profileImage": user.profileImage,
+        "gender" : user.gender,
+        }, "Batch-14" , {expiresIn: "24h"})
         console.log("token", token);
 
         res.json({
