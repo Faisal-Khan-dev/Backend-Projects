@@ -10,6 +10,6 @@ notRoute.delete("/:id", auth, delNoteController)
 notRoute.get("/getNotes", auth, getAllNotesController)
 notRoute.put("/updateNote/:id", auth, updateNoteController)
 notRoute.post("/saveDraft", auth, draftNoteController)
-notRoute.put("/update-profile", upload.single('profileImage'), updateProfile);
+notRoute.put("/update-profile", auth, upload.single('profileImage'), updateProfile);
 
 export default notRoute

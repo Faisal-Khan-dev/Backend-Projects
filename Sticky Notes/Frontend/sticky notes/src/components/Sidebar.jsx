@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
@@ -67,6 +68,15 @@ const Sidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
     },
   ];
 
+   useEffect(() => {
+     const currentItem = menuItems.find(
+       (item) => item.path === location.pathname
+     );
+     if (currentItem) {
+       setActiveTab(currentItem.id);
+     }
+   }, [location.pathname]); 
+
   const handleNavigation = (item) => {
     setActiveTab(item.id);
     setSidebarOpen(false);
@@ -101,7 +111,7 @@ const Sidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="flex items-center justify-between p-6 border-b border-slate-200 bg-white/80 backdrop-blur-sm">
+          <div className="flex items-center justify-between p-5 border-b border-slate-200/60 bg-white backdrop-blur-sm">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
                 <svg
@@ -154,7 +164,7 @@ const Sidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
                 key={item.id}
                 onClick={() => handleNavigation(item)}
                 className={`
-                  w-full flex items-center space-x-4 px-4 py-4 rounded-2xl text-left transition-all duration-200 group
+                  cursor-pointer w-full flex items-center space-x-4 px-4 py-4 rounded-2xl text-left transition-all duration-200 group
                   ${
                     activeTab === item.id
                       ? "bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 border-r-4 border-indigo-500 shadow-md"
@@ -188,7 +198,7 @@ const Sidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
           <div className="mt-auto p-6">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center space-x-4 px-4 py-4 rounded-2xl text-left transition-all duration-200 group text-slate-600 hover:bg-red-50 hover:text-red-700 hover:shadow-md border-r-4 border-transparent"
+              className="w-full flex items-center space-x-4 px-4 py-4 rounded-2xl text-left cursor-pointer transition-all duration-200 group text-slate-600 hover:bg-red-50 hover:text-red-700 hover:shadow-md hover:border-r-4 hover:border-red-500 hover:shadow-md"
             >
               <div className="p-2 rounded-xl transition-all duration-200 bg-slate-100 text-slate-500 group-hover:bg-red-500 group-hover:text-white">
                 <svg
@@ -205,7 +215,7 @@ const Sidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
                   />
                 </svg>
               </div>
-              <span className="font-medium text-lg">Logout</span>
+              <span className="font-medium text-lg ">Logout</span>
             </button>
           </div>
         </div>
